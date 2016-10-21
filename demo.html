@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="demo.css" />
+		<title></title>
+	</head>
+	<body>
+		<div class="banner"></div>
+		<script>
+			function ajax(option){
+				var xhr = new XMLHttpRequest(),
+					type = option.type || "get",
+					url = option.url,
+					data = option.data;
+				function queryString(obj){
+					var str = "",
+						i;
+					for(i in obj){
+						str += "&" + i + "=" + obj[i];
+					}
+					return str.slice(1);
+				}
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState === 4 && xhr.status === 200){
+						option.success(JSON.parse(xhr.responseText));
+					}
+				};
+				xhr.open(type, type === "get" ? url + "?" + queryString(data) : "", 1);
+				type === "post" && xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhr.send(type === "post" ? queryString(data) : null);
+			}
+			function setRem(){
+				document.documentElement.style.fontSize = innerWidth / 20 + "px";
+			}
+			setRem();
+			onresize = setRem;
+		</script>
+		<script src="demo.js"></script>
+	</body>
+</html>
